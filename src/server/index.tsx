@@ -27,6 +27,7 @@ const server = express();
 // Stats
 let stats: {
   client: string;
+  styles: string;
   vendor: string;
 };
 
@@ -38,6 +39,7 @@ if (process.env.NODE_ENV === 'production') {
     .then((module) => {
       stats = {
         client: module.client,
+        styles: module.styles,
         vendor: module.vendor,
       };
     })
@@ -73,6 +75,9 @@ server.get('*', (_: express.Request, response: express.Response) => {
         <title>React ecosystem boilerplate</title>
         <meta name="description" content="React ecosystem boilerplate" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link href="${
+          runTimeEnvironment === 'prod' ? stats['styles'] : 'css/styles.css'
+        }" rel="stylesheet">
       </head>
       <body>
         <div id="root">`);

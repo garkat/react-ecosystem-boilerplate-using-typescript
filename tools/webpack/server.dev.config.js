@@ -32,6 +32,22 @@ module.exports = {
   // Loaders
   module: {
     rules: [
+      // .css, .sass, .scss loader
+      {
+        exclude: /node_modules/,
+        test: /\.(c|sa|sc)ss$/,
+        use: [
+          {
+            loader: 'css-loader',
+            options: {
+              exportOnlyLocals: true,
+              localIdentName: '[path][name]__[local]--[hash:base64:5]',
+              modules: true,
+            },
+          },
+        ],
+      },
+
       // .js, .ts, .tsx loader
       {
         exclude: /node_modules/,

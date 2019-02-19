@@ -1,4 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+/* eslint-disable @typescript-eslint/no-var-requires */
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { resolve } = require('path');
 
 const distPathPublic = resolve(__dirname, '../../dist/dev/public');
@@ -23,6 +24,31 @@ module.exports = {
   // Loaders
   module: {
     rules: [
+      // .css, .sass, .scss loader
+      {
+        exclude: /node_modules/,
+        test: /\.(c|sa|sc)ss$/,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              localIdentName: '[path][name]__[local]--[hash:base64:5]',
+              modules: true,
+              sourceMap: true,
+            },
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+        ],
+      },
+
       // .js, .ts, .tsx loader
       {
         exclude: /node_modules/,
@@ -82,6 +108,14 @@ module.exports = {
     // will be used to serve the bundled file(s).
     publicPath: 'js/',
   },
+
+  // Plugins
+  plugins: [
+    // Extract CSS to an exernal file
+    new MiniCssExtractPlugin({
+      filename: '../css/styles.css',
+    }),
+  ],
 
   // Resolve imports without extensions
   resolve: {
