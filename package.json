@@ -41,6 +41,9 @@
     "sass-loader": "^7.1.0",
     "source-map-loader": "^0.2.4",
     "style-loader": "^0.23.1",
+    "stylelint": "^9.10.1",
+    "stylelint-config-standard": "^18.2.0",
+    "stylelint-order": "^2.0.0",
     "terser-webpack-plugin": "^1.2.1",
     "typescript": "^3.3.3",
     "webpack": "^4.29.3",
@@ -55,11 +58,11 @@
     }
   },
   "lint-staged": {
-    "*.{ts,tsx}": "yarn run check:types",
-    "linters": {
-      "*.{js, ts, tsx}": "eslint",
-      "*.{html, md}": ["prettier -c"]
-    }
+    "*.{html, md}": ["prettier -c"],
+    "src/**/*.(c|sa|sc)ss": "stylelint",
+    "src/**/*.js": "eslint",
+    "src/**/*.{ts,tsx}": "eslint && tsc",
+    "tools/**/*.js": "eslint"
   },
   "scripts": {
     "check:types": "tsc",
@@ -78,7 +81,8 @@
     "build:prod:client": "webpack --config tools/webpack/client.prod.config.js",
     "build:prod:server": "webpack --config tools/webpack/server.prod.config.js",
     "eslint": "eslint src",
-    "lint": "yarn run eslint",
+    "lint": "yarn run eslint && yarn run stylelint",
+    "stylelint": "stylelint src",
     "start:dev": "yarn run clean:dev && yarn run build:dev && node dist/dev/private/js/server.js",
     "start:prod": "yarn run clean:prod && yarn run build:prod && node dist/prod/private/js/server.js",
     "wds": "webpack-dev-server --config tools/webpack/dev-server.config.js"
