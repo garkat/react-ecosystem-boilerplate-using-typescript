@@ -10,13 +10,14 @@
 body {
   border: 0;
   color: #000;
-  font-family: 'Arial, Helvetica, sans-serif';
+  font-family: Helvetica, Arial, Verdana, Tahoma, sans-serif;
   font-size: 10px;
   font-weight: 300;
-  margin: 0px;
+  margin: 0;
   min-width: 300px;
-  padding: 0px;
+  padding: 0;
   vertical-align: baseline;
+  width: 100px;
 }
 
 ul,
@@ -81,8 +82,8 @@ textarea {
   }
 
   .clear-fix {
-    content: '';
     clear: both;
+    content: '';
     display: table;
   }
 
