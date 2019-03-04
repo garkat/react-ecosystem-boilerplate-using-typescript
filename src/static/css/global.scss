@@ -1,3 +1,5 @@
+@import './_variables';
+
 /*******************************************************************************
   CSS reset, and General styles
 *******************************************************************************/
@@ -5,19 +7,21 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 10px;
 }
 
 body {
   border: 0;
   color: #000;
   font-family: Helvetica, Arial, Verdana, Tahoma, sans-serif;
-  font-size: 10px;
   font-weight: 300;
-  margin: 0;
-  min-width: 300px;
-  padding: 0;
   vertical-align: baseline;
-  width: 100px;
+  width: 100%;
 }
 
 ul,
@@ -26,16 +30,16 @@ ol {
 }
 
 a {
-  color: #15c;
+  color: map-get($text-color, generic);
   text-decoration: none;
 
   &:hover {
-    color: #03a9f4;
+    color: map-get($text-color, generic-hover);
     text-decoration: none;
   }
 
   &:visited {
-    color: #15c;
+    color: map-get($text-color, generic-visited);
   }
 }
 
@@ -110,6 +114,10 @@ textarea {
 
   .flex-item-1 {
     flex: 1 1 auto;
+  }
+
+  .flex-items-align-center {
+    align-items: center;
   }
 
   .float-left {
