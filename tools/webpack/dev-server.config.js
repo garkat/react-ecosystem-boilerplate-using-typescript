@@ -47,7 +47,7 @@ module.exports = {
   // Entry points
   entry: {
     // Client
-    client: `${srcPath}/Client`,
+    client: `${srcPath}/client`,
 
     // Vendor
     vendor: [
@@ -94,6 +94,11 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
+              plugins: [
+                '@babel/plugin-syntax-dynamic-import',
+                '@loadable/babel-plugin',
+                'react-hot-loader/babel',
+              ],
               presets: [
                 [
                   '@babel/preset-env',
@@ -107,7 +112,6 @@ module.exports = {
                 '@babel/preset-react',
                 '@babel/preset-typescript',
               ],
-              plugins: ['react-hot-loader/babel'],
             },
           },
         ],

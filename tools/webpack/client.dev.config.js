@@ -1,13 +1,26 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+const LoadablePlugin = require('@loadable/webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { resolve } = require('path');
 
-const distPathPublic = resolve(__dirname, '../../dist/dev/public');
-const srcPath = resolve(__dirname, '../../src');
+// Custom plugin to create required directories if they don't exist already
+const CreateRequiredDirectoriesPlugin = require('./create-required-directories-plugin');
+
+// Distribution base directory
+const distBase = resolve(__dirname, '../../dist/dev');
+
+// Various directories with path
+const PATHS = {
+  distPublic: `${distBase}/public`,
+  distPublicCSS: `${distBase}/public/css`,
+  distPublicJS: `${distBase}/public/js`,
+  distPublicStats: `${distBase}/public/stats`,
+  src: resolve(__dirname, '../../src'),
+};
 
 module.exports = {
   // Base directory for resolving entry points and loaders from configuration.
-  context: srcPath,
+  context: PATHS.src,
 
   // Enable source map
   devtool: 'source-map',
@@ -15,7 +28,7 @@ module.exports = {
   // Entry points
   entry: {
     // Client
-    client: `${srcPath}/Client`,
+    client: `${PATHS.src}/client`,
   },
 
   // Mode
@@ -57,6 +70,7 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
+              plugins: ['@babel/plugin-syntax-dynamic-import', '@loadable/babel-plugin'],
               presets: [
                 [
                   '@babel/preset-env',
@@ -98,7 +112,7 @@ module.exports = {
     filename: '[name].js',
 
     // The target directory where webpack should store the output file(s).
-    path: `${distPathPublic}/js`,
+    path: PATHS.distPublicJS,
 
     // Include comments in bundles with information about the contained modules.
     // Use in Dev environment only.
@@ -111,6 +125,25 @@ module.exports = {
 
   // Plugins
   plugins: [
+    // Plugin to create required directories if they don't exist already.
+    new CreateRequiredDirectoriesPlugin({
+      dirs: [
+        distBase,
+        PATHS.distPublic,
+        PATHS.distPublicCSS,
+        PATHS.distPublicJS,
+        PATHS.distPublicStats,
+      ],
+    }),
+
+    new LoadablePlugin({
+      // Manifest file name
+      filename: `../stats/loadable-stats.json`,
+
+      // Write assets to disk at given filename location
+      writeToDisk: true,
+    }),
+
     // Extract CSS to an exernal file
     new MiniCssExtractPlugin({
       filename: '../css/styles.css',

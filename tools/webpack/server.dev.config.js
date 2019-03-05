@@ -2,23 +2,33 @@
 const fs = require('fs');
 const { resolve } = require('path');
 
-const distPathPrivate = resolve(__dirname, '../../dist/dev/private');
-const srcPath = resolve(__dirname, '../../src');
-const nodeModulesPath = resolve(__dirname, '../../node_modules');
+// Custom plugin to create required directories if they don't exist already
+const CreateRequiredDirectoriesPlugin = require('./create-required-directories-plugin');
+
+// Distribution base directory
+const distBase = resolve(__dirname, '../../dist/dev');
+
+// Various directories with path
+const PATHS = {
+  distPrivate: `${distBase}/private`,
+  distPrivateJS: `${distBase}/private/js`,
+  nodeModules: resolve(__dirname, '../../node_modules'),
+  src: resolve(__dirname, '../../src'),
+};
 
 module.exports = {
   // Base directory for resolving entry points and loaders from configuration.
-  context: srcPath,
+  context: PATHS.src,
 
   // Entry points
   entry: {
     // Server
-    server: `${srcPath}/Server`,
+    server: `${PATHS.src}/server`,
   },
 
   // Keep node_module paths out of the bundle
   externals: fs
-    .readdirSync(nodeModulesPath)
+    .readdirSync(PATHS.nodeModules)
     .concat(['react-dom/server'])
     .reduce((ext, mod) => {
       const extParam = ext;
@@ -56,7 +66,7 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              plugins: ['@babel/plugin-syntax-dynamic-import'],
+              plugins: ['@babel/plugin-syntax-dynamic-import', '@loadable/babel-plugin'],
               presets: [
                 [
                   '@babel/preset-env',
@@ -90,7 +100,7 @@ module.exports = {
     filename: '[name].js',
 
     // The target directory where webpack should store the output file(s).
-    path: `${distPathPrivate}/js`,
+    path: PATHS.distPrivateJS,
 
     // Include comments in bundles with information about the contained modules.
     // Use in Dev environment only.
@@ -100,6 +110,14 @@ module.exports = {
     // will be used to serve the bundled file(s).
     publicPath: 'js/',
   },
+
+  // Plugins
+  plugins: [
+    // Plugin to create required directories if they don't exist already.
+    new CreateRequiredDirectoriesPlugin({
+      dirs: [distBase, PATHS.distPrivate, PATHS.distPrivateJS],
+    }),
+  ],
 
   // Resolve imports without extensions
   resolve: {

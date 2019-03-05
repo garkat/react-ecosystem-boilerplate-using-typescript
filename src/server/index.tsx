@@ -1,7 +1,9 @@
 import * as express from 'express';
+import { ChunkExtractor } from '@loadable/server';
 import { resolve } from 'path';
 import * as React from 'react';
 import { renderToNodeStream } from 'react-dom/server';
+import { StaticRouter } from 'react-router-dom';
 
 import { PORTS } from '../data/constants/app/config';
 
@@ -16,6 +18,15 @@ const distPathPublic = resolve(
   `../../../${runTimeEnvironment === 'prod' ? 'prod' : 'dev'}/public`
 );
 
+// Loadable stats file
+const loadableStatsFile = resolve(`${distPathPublic}/stats/loadable-stats.json`);
+
+// Loadable Chunk Extractor
+const loadableChunkExtractor = new ChunkExtractor({
+  statsFile: loadableStatsFile,
+  entrypoints: ['client'],
+});
+
 // Port - first try to use port from process environment.
 // If it's not found, use it from the app config file.
 // If it doesn't exist in the app config file either, use 3000.
@@ -23,31 +34,6 @@ const port = process.env.PORT || runTimeEnvironment === 'prod' ? PORTS.prod : PO
 
 // Create a server
 const server = express();
-
-// Stats
-let stats: {
-  client: string;
-  styles: string;
-  vendor: string;
-};
-
-// Please don't use runTimeEnvironment instead of process.env.NODE_ENV in the condition below.
-// Webpack doesn't compile successfully.
-if (process.env.NODE_ENV === 'production') {
-  // @ts-ignore
-  import('../../dist/prod/public/stats/manifest.json')
-    .then((module) => {
-      stats = {
-        client: module.client,
-        styles: module.styles,
-        vendor: module.vendor,
-      };
-    })
-    .catch((err) => {
-      // eslint-disable-next-line no-console
-      console.log(`Error: ${err.message}`);
-    });
-}
 
 // Disable x-powered-by header
 server.disable('x-powered-by');
@@ -66,8 +52,13 @@ server.use(
   })
 );
 
+// Replace 'js/../css' to 'css'
+const styleTags = loadableChunkExtractor.getStyleTags().replace(/js\/..\/css/g, 'css');
+
 // Render to node stream
-server.get('*', (_: express.Request, response: express.Response) => {
+server.get('*', (request: express.Request, response: express.Response) => {
+  response.set('content-type', 'text/html');
+
   response.write(`<!DOCTYPE html>
     <html>
       <head>
@@ -75,14 +66,18 @@ server.get('*', (_: express.Request, response: express.Response) => {
         <title>React ecosystem boilerplate</title>
         <meta name="description" content="React ecosystem boilerplate" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link href="${
-          runTimeEnvironment === 'prod' ? stats['styles'] : 'css/styles.css'
-        }" rel="stylesheet">
+        ${styleTags}
       </head>
       <body>
         <div id="root">`);
 
-  const stream = renderToNodeStream(<App />);
+  const stream = renderToNodeStream(
+    loadableChunkExtractor.collectChunks(
+      <StaticRouter context={{}} location={request.url}>
+        <App />
+      </StaticRouter>
+    )
+  );
 
   stream.pipe(
     response,
@@ -91,8 +86,7 @@ server.get('*', (_: express.Request, response: express.Response) => {
 
   stream.on('end', () => {
     response.write(`</div>
-        <script src=${runTimeEnvironment === 'prod' ? stats['client'] : 'js/client.js'}></script>
-        <script src=${runTimeEnvironment === 'prod' ? stats['vendor'] : 'js/vendor.js'}></script>
+        ${loadableChunkExtractor.getScriptTags()}
       </body>
     </html>`);
     response.end();
