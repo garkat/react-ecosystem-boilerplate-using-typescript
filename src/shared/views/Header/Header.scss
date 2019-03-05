@@ -1,0 +1,19 @@
+@import '../../../static/css/_variables';
+
+.header {
+  border-bottom: 1px solid map-get($border-color, header-bottom);
+  grid-area: header;
+}
+
+.logo {
+  color: map-get($text-color, logo);
+  font-weight: normal;
+
+  &:hover {
+    color: map-get($text-color, logo);
+  }
+
+  &:visited {
+    color: map-get($text-color, logo);
+  }
+}

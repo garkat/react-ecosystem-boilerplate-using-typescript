@@ -1,22 +1,33 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const { exec } = require('child_process');
+const LoadablePlugin = require('@loadable/webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const { resolve } = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
-const ManifestPlugin = require('webpack-manifest-plugin');
 
-const distPathPublic = resolve(__dirname, '../../dist/prod/public');
-const srcPath = resolve(__dirname, '../../src');
+// Custom plugin to create required directories if they don't exist already
+const CreateRequiredDirectoriesPlugin = require('./create-required-directories-plugin');
+
+// Distribution base directory
+const distBase = resolve(__dirname, '../../dist/prod');
+
+// Various directories with path
+const PATHS = {
+  distPublic: `${distBase}/public`,
+  distPublicCSS: `${distBase}/public/css`,
+  distPublicJS: `${distBase}/public/js`,
+  distPublicStats: `${distBase}/public/stats`,
+  src: resolve(__dirname, '../../src'),
+};
 
 module.exports = {
   // Base directory for resolving entry points and loaders from configuration.
-  context: srcPath,
+  context: PATHS.src,
 
   // Entry points
   entry: {
     // Client
-    client: `${srcPath}/Client`,
+    client: `${PATHS.src}/client`,
   },
 
   // Mode
@@ -54,6 +65,7 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
+              plugins: ['@babel/plugin-syntax-dynamic-import', '@loadable/babel-plugin'],
               presets: [
                 [
                   '@babel/preset-env',
@@ -91,14 +103,6 @@ module.exports = {
 
     splitChunks: {
       cacheGroups: {
-        // Merge all the CSS into one file
-        styles: {
-          chunks: 'all',
-          enforce: true,
-          name: 'styles',
-          test: /\.(c|sa|sc)ss$/,
-        },
-
         // Create a custom vendor chunk.
         vendor: {
           chunks: 'all',
@@ -110,6 +114,19 @@ module.exports = {
     },
   },
 
+  // Options related to how webpack emits results
+  output: {
+    // The filename template for entry chunks.
+    filename: '[name].[chunkhash].js',
+
+    // The target directory where webpack should store the output file(s).
+    path: PATHS.distPublicJS,
+
+    // The url to the output directory resolved relative to the HTML page which
+    // will be used to serve the bundled file(s).
+    publicPath: 'js/',
+  },
+
   // Show warning if chunk size is too large
   performance: {
     hints: 'warning',
@@ -117,61 +134,30 @@ module.exports = {
 
   // Plugins
   plugins: [
-    // This is to remove the additional styles.js file weback is currently (as per 02/18/19)
-    // creating for styles split chunk.
-    {
-      apply: (compiler) => {
-        compiler.hooks.done.tap('AfterEmitPlugin', () => {
-          exec(`rm -rf ${distPathPublic}/js/styles*.js`);
-        });
-      },
-    },
-
-    new ManifestPlugin({
-      // Manifest file name
-      fileName: `${distPathPublic}/stats/manifest.json`,
-
-      // Unfortunately, webpack is currently (as per 02/18/19) creating an additional styles.js
-      // file for styles split chunk.
-      filter: (file) => {
-        return file.name !== 'styles.js';
-      },
-
-      // The below function does the following things:
-      // 1. Removes extension from the key values of the manifest file.
-      // 2. Replaces 'js/../css/' to 'css/'.
-      map: (file) => {
-        return {
-          ...file,
-          name: file.name
-            .split('.')
-            .slice(0, -1)
-            .join('.'),
-          path:
-            file.path.indexOf('js/../css/') !== -1
-              ? file.path.replace('js/../css/', 'css/')
-              : file.path,
-        };
-      },
+    // Plugin to create required directories if they don't exist already.
+    new CreateRequiredDirectoriesPlugin({
+      dirs: [
+        distBase,
+        PATHS.distPublic,
+        PATHS.distPublicCSS,
+        PATHS.distPublicJS,
+        PATHS.distPublicStats,
+      ],
     }),
 
+    new LoadablePlugin({
+      // Manifest file name
+      filename: `../stats/loadable-stats.json`,
+
+      // Write assets to disk at given filename location
+      writeToDisk: true,
+    }),
+
+    // Extract CSS to an exernal file
     new MiniCssExtractPlugin({
       filename: '../css/[name].[contenthash].css',
     }),
   ],
-
-  // Options related to how webpack emits results
-  output: {
-    // The filename template for entry chunks.
-    filename: '[name].[chunkhash].js',
-
-    // The target directory where webpack should store the output file(s).
-    path: `${distPathPublic}/js`,
-
-    // The url to the output directory resolved relative to the HTML page which
-    // will be used to serve the bundled file(s).
-    publicPath: 'js/',
-  },
 
   // Resolve imports without extensions
   resolve: {
