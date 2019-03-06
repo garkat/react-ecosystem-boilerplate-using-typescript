@@ -65,7 +65,11 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              plugins: ['@babel/plugin-syntax-dynamic-import', '@loadable/babel-plugin'],
+              plugins: [
+                '@babel/plugin-proposal-class-properties',
+                '@babel/plugin-syntax-dynamic-import',
+                '@loadable/babel-plugin',
+              ],
               presets: [
                 [
                   '@babel/preset-env',
