@@ -14,6 +14,7 @@ module.exports = {
     project: './tsconfig.json',
   },
   plugins: ['@typescript-eslint', 'prettier'],
+  root: true,
   rules: {
     // Allow object dot notation.
     'dot-notation': 0,
@@ -22,7 +23,7 @@ module.exports = {
     // Prettier settings
     'prettier/prettier': ['error'],
     // Allow both jsx and tsx extensions
-    'react/jsx-filename-extension': [1, { extensions: ['.tsx'] }],
+    'react/jsx-filename-extension': [1, { extensions: ['.js', '.tsx'] }],
     // Disallow arrow function or bind call as a prop for performance reasons
     'react/jsx-no-bind': 2,
   },
