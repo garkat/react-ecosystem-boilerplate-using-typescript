@@ -3,3 +3,4 @@
 
 # Directories to ignore
 node_modules
+test/jest/coverage
