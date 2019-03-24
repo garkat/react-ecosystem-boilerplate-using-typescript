@@ -1,6 +1,6 @@
 {
   "name": "react-ecosystem-boilerplate",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "React ecosystem boilerplate",
   "license": "MIT",
   "dependencies": {
@@ -31,16 +31,26 @@
     "@types/webpack-env": "^1.13.7",
     "@typescript-eslint/eslint-plugin": "^1.3.0",
     "@typescript-eslint/parser": "^1.3.0",
+    "babel-jest": "^24.5.0",
     "babel-loader": "^8.0.5",
+    "babel-plugin-react-remove-properties": "^0.3.0",
     "css-loader": "^2.1.0",
+    "cypress": "^3.1.5",
+    "enzyme": "^3.9.0",
+    "enzyme-adapter-react-16": "^1.11.2",
+    "enzyme-to-json": "^3.3.5",
     "eslint": "^5.14.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^4.0.0",
+    "eslint-plugin-cypress": "^2.2.1",
     "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-jest": "^22.4.1",
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-react": "^7.12.4",
     "husky": "^1.3.1",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^24.5.0",
     "lint-staged": "^8.1.4",
     "mini-css-extract-plugin": "^0.5.0",
     "node-sass": "^4.11.0",
@@ -61,14 +71,12 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-pushed": "lint-staged"
+      "pre-commit": "lint-staged && yarn run jest:related",
+      "pre-pushed": "lint-staged && yarn run jest:related"
     }
   },
   "lint-staged": {
-    "*.{html, md}": [
-      "prettier -c"
-    ],
+    "*.{html, md}": ["prettier -c"],
     "src/**/*.(c|sa|sc)ss": "stylelint",
     "src/**/*.js": "eslint",
     "src/**/*.{ts,tsx}": "tsc --noEmit --jsx react",
@@ -91,7 +99,15 @@
     "build:prod": "yarn run build:prod:client && yarn run build:prod:server",
     "build:prod:client": "webpack --config tools/webpack/client.prod.config.js",
     "build:prod:server": "webpack --config tools/webpack/server.prod.config.js",
+    "cy:open:dev": "cypress open --env testEnvName=development",
+    "cy:open:prod": "cypress open --env testEnvName=production",
+    "cy:run:dev": "cypress run --env testEnvName=development",
+    "cy:run:prod": "cypress run --env testEnvName=production",
     "eslint": "eslint src",
+    "jest": "jest --config test/jest/config.js --no-cache",
+    "jest:coverage": "yarn jest --colors --coverage",
+    "jest:related": "yarn jest:coverage --bail --changedSince=master",
+    "jest:watch": "yarn jest --watch",
     "lint": "yarn run eslint && yarn run stylelint",
     "stylelint": "stylelint src",
     "start:dev": "yarn run clean:dev && yarn run build:dev && node dist/dev/private/js/server.js",

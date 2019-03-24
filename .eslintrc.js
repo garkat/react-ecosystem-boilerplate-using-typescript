@@ -1,10 +1,12 @@
 module.exports = {
   env: {
     browser: true,
+    'jest/globals': true,
     node: true,
   },
   extends: [
     'airbnb',
+    'plugin:jest/recommended',
     'plugin:@typescript-eslint/recommended',
     'prettier',
     'prettier/@typescript-eslint',
@@ -13,7 +15,7 @@ module.exports = {
   parserOptions: {
     project: './tsconfig.json',
   },
-  plugins: ['@typescript-eslint', 'prettier'],
+  plugins: ['@typescript-eslint', 'jest', 'prettier'],
   root: true,
   rules: {
     // Allow object dot notation.

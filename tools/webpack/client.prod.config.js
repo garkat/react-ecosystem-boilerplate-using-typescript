@@ -69,6 +69,7 @@ module.exports = {
                 '@babel/plugin-proposal-class-properties',
                 '@babel/plugin-syntax-dynamic-import',
                 '@loadable/babel-plugin',
+                'react-remove-properties',
               ],
               presets: [
                 [

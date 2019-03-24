@@ -6,8 +6,8 @@ import '../../../static/css/global.scss';
 import AppStyles from './App.scss';
 import ErrorBounday from '../ErrorBoundary';
 
-import Header from '../Header';
 import Footer from '../Footer';
+import Header from '../Header';
 import NotFound from '../NotFound';
 import routes from '../../routes';
 
