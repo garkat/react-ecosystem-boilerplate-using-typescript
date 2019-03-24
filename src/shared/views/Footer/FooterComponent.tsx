@@ -12,7 +12,9 @@ const FooterComponent: React.FC<{}> = (): JSX.Element => (
       <ul className="display-flex">
         {FOOTER_LINKS.map((footerLink) => (
           <li key={footerLink.name}>
-            <NavLink to={footerLink.linkToLocation}>{footerLink.name}</NavLink>
+            <NavLink data-test={footerLink.dataTest} to={footerLink.linkToLocation}>
+              {footerLink.name}
+            </NavLink>
           </li>
         ))}
       </ul>
