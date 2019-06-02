@@ -1,0 +1,1 @@
+(window.__LOADABLE_LOADED_CHUNKS__=window.__LOADABLE_LOADED_CHUNKS__||[]).push([[14],{28:function(_,e,n){"use strict";n.r(e);var t=n(0);e.default=function(){return t.createElement("main",{className:"font-size-16"},"Home page")}}}]);

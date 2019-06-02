@@ -1,0 +1,1 @@
+(window.__LOADABLE_LOADED_CHUNKS__=window.__LOADABLE_LOADED_CHUNKS__||[]).push([[2,8],{12:function(t,e,n){"use strict";n.r(e);var _=n(27);e.default=_.default},27:function(t,e,n){"use strict";n.r(e);var _=n(0);e.default=function(){return _.createElement("div",{className:"font-size-16"},"Contact us page")}}}]);

@@ -1,0 +1,1 @@
+(window.__LOADABLE_LOADED_CHUNKS__=window.__LOADABLE_LOADED_CHUNKS__||[]).push([[1,5],{11:function(t,e,n){"use strict";n.r(e);var u=n(26);e.default=u.default},26:function(t,e,n){"use strict";n.r(e);var u=n(0);e.default=function(){return u.createElement("main",{className:"font-size-16"},"About us page")}}}]);

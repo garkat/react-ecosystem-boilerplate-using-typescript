@@ -1,0 +1,1 @@
+(window.__LOADABLE_LOADED_CHUNKS__=window.__LOADABLE_LOADED_CHUNKS__||[]).push([[18],{51:function(n,_){_['"About Us" component Renders correctly 1']='\n<main\n  className="font-size-16"\n  data-test="main"\n>\n  About us page\n</main>\n'}}]);

@@ -1,0 +1,1 @@
+exports.ids=[14],exports.modules={41:function(t,e,n){"use strict";n.r(e);var o=n(195),c=n(0),r=n.n(c),s=n(16);describe('"Not Found" component',function(){it("Renders correctly",function(){var t=Object(o.shallow)(r.a.createElement(s.default,null));expect(t).toMatchSnapshot()})})}};

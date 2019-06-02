@@ -1,0 +1,1 @@
+exports.ids=[16],exports.modules={87:function(n,e){e['"About Us" component Renders correctly 1']='\n<main\n  className="font-size-16"\n  data-test="main"\n>\n  About us page\n</main>\n'}};

@@ -1,0 +1,1 @@
+exports.ids=[2,13],exports.modules={11:function(e,t,r){"use strict";r.r(t);var s=r(32);t.default=s.default},32:function(e,t,r){"use strict";r.r(t);var s=r(0);t.default=function(){return s.createElement("main",{className:"font-size-16"},"Home page")}}};

@@ -1,0 +1,1 @@
+(window.__LOADABLE_LOADED_CHUNKS__=window.__LOADABLE_LOADED_CHUNKS__||[]).push([[20],{53:function(n,_){_['"Contact Us" component renders correctly 1']='\n<div\n  className="font-size-16"\n  data-test="main"\n>\n  Contact us page\n</div>\n'}}]);

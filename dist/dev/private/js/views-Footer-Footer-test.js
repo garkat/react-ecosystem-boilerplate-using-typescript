@@ -1,0 +1,16 @@
+exports.ids = ["views-Footer-Footer-test"];
+exports.modules = {
+
+/***/ "./shared/views/Footer/Footer.test.js":
+/*!********************************************!*\
+  !*** ./shared/views/Footer/Footer.test.js ***!
+  \********************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var enzyme__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! enzyme */ \"enzyme\");\n/* harmony import */ var enzyme__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(enzyme__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ \"react\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ \"react-router-dom\");\n/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_router_dom__WEBPACK_IMPORTED_MODULE_2__);\n/* harmony import */ var _data_views_schema_footer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../data/views-schema/footer */ \"./data/views-schema/footer.js\");\n/* harmony import */ var _data_views_schema_footer__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_data_views_schema_footer__WEBPACK_IMPORTED_MODULE_3__);\n/* harmony import */ var _FooterComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./FooterComponent */ \"./shared/views/Footer/FooterComponent.tsx\");\n\n\n\n\n\ndescribe('Footer component', () => {\n  it('has all navigation links defined in the footer schema', () => {\n    const wrapper = Object(enzyme__WEBPACK_IMPORTED_MODULE_0__[\"mount\"])(react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__[\"MemoryRouter\"], null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_FooterComponent__WEBPACK_IMPORTED_MODULE_4__[\"default\"], null))); // Check if number of footer links is equivalent of links defined in footer schema\n\n    expect(wrapper.find('a')).toHaveLength(_data_views_schema_footer__WEBPACK_IMPORTED_MODULE_3__[\"FOOTER_LINKS\"].length); // Grab all link using their href property, and confirm their text matches to their respective\n    // values in footer schema.\n\n    _data_views_schema_footer__WEBPACK_IMPORTED_MODULE_3__[\"FOOTER_LINKS\"].forEach(footerLink => {\n      expect(wrapper.find({\n        href: footerLink.linkToLocation\n      }).text()).toEqual(`${footerLink.name}`);\n    });\n    wrapper.unmount();\n  });\n  it('renders correctly', () => {\n    const wrapper = Object(enzyme__WEBPACK_IMPORTED_MODULE_0__[\"shallow\"])(react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_FooterComponent__WEBPACK_IMPORTED_MODULE_4__[\"default\"], null));\n    expect(wrapper).toMatchSnapshot();\n  });\n});\n\n//# sourceURL=webpack:///./shared/views/Footer/Footer.test.js?");
+
+/***/ })
+
+};;

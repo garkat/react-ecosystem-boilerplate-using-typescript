@@ -1,0 +1,1 @@
+exports.ids=[1,7],exports.modules={10:function(t,e,s){"use strict";s.r(e);var r=s(31);e.default=r.default},31:function(t,e,s){"use strict";s.r(e);var r=s(0);e.default=function(){return r.createElement("div",{className:"font-size-16"},"Contact us page")}}};

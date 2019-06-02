@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack:///./shared/views/ErrorBoundary/__snapshots__/ErrorBoundary.test.js.snap"],"names":[],"mappings":";;;;;;;;;AAAA;;AAEA","file":"views-ErrorBoundary-__snapshots__-ErrorBoundary-test-js-snap.js","sourcesContent":["// Jest Snapshot v1, https://goo.gl/fbAQLP\n\nexports[`\"Error boundary\" component Renders correctly 1`] = `\"\"`;\n"],"sourceRoot":""}

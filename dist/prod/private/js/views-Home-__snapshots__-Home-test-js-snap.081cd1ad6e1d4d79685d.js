@@ -1,0 +1,1 @@
+exports.ids=[22],exports.modules={93:function(n,e){e["Home component Renders correctly 1"]='\n<main\n  className="font-size-16"\n  data-test="main"\n>\n  Home page\n</main>\n'}};

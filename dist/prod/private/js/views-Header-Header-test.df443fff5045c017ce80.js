@@ -1,0 +1,1 @@
+exports.ids=[11],exports.modules={39:function(e,t,n){"use strict";n.r(t);var r=n(195),c=n(0),o=n.n(c),s=n(15);describe("Header component",function(){it("renders correctly.",function(){var e=Object(r.shallow)(o.a.createElement(s.default,null));expect(e).toMatchSnapshot()})})}};
